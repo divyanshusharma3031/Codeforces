@@ -63,90 +63,52 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    vi arr(n, 0);
+    vi adj[1001];
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            cout << arr[i] << " ";
-        }
-        cout << "\n";
-        return;
+        cin>>arr[i];
     }
-    if (k == 0)
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
+        for(int j=1;j*j<=arr[i];j++)
         {
-            cout << -arr[i] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
-        {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
+            if(arr[i]%j==0)
             {
-                arr[x]=-1000;
+                adj[j].push_back(i);
+                if(arr[i]/j!=j)
+                {
+                    adj[j].push_back(i);
+                }
             }
-            break;
         }
     }
-    for(auto it:arr)
+    int m=1;
+    vi ans(n,-1);
+    for(int i=2;i<=1000;i++)
+    {
+        if(adj[i].size()>=1)
+        {
+            bool b=false;
+            for(auto it:adj[i])
+            {
+                if(ans[it]==-1)
+                {
+                    ans[it]=m;
+                    b=true;
+                }
+            }
+            if(b)
+                m++;
+        }
+    }
+    cout<<m-1<<"\n";
+    for(auto it:ans)
     {
         cout<<it<<" ";
     }

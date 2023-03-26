@@ -63,94 +63,63 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    string s;
+    cin >> s;
+    for (int i = 0; i < n - 1; i++)
     {
-        for (int i = 0; i < n; i++)
+        if (s[i] == s[i + 1] && s[i] == 'a')
         {
-            cout << arr[i] << " ";
+            cout << "2\n";
+            return;
         }
-        cout << "\n";
-        return;
     }
-    if (k == 0)
+    // there are no two consecutive a's
+    vector<int> v;
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        if (s[i] == 'a')
         {
-            cout << -arr[i] << " ";
+            v.push_back(i);
         }
-        cout << "\n";
-        return;
     }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
+    string a = "abbacca";
+    string b = "accabba";
+    string c = "aba";
+    string d = "aca";
+    string e = "abca";
+    string f = "acba";
+    int ans2 = INT_MAX;
+    for (int i = 0; i < n; i++)
     {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
+        string ans = "";
+        for (int j = i; j < min(i + 7, n); j++)
         {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
+            ans += s[j];
+            if (c == ans || d == ans)
             {
-                arr[x]=-1000;
+                ans2 = min(ans2, j - i + 1);
             }
-            break;
+            if (e == ans || f == ans)
+            {
+                ans2 = min(ans2, j - i + 1);
+            }
+            if (ans == a || ans == b)
+            {
+                ans2 = min(ans2, 7ll);
+            }
         }
     }
-    for(auto it:arr)
+    if (ans2 == INT_MAX)
     {
-        cout<<it<<" ";
+        cout << "-1\n";
+        return;
     }
-    cout<<"\n";
+    cout << ans2 << "\n";
 }
 int32_t main()
 {

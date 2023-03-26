@@ -63,94 +63,38 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    ll n;
-    cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    string s;
+    cin>>s;
+    string ans="";
+    map<int,int> mpp;
+    for(auto it:s)
     {
-        for (int i = 0; i < n; i++)
-        {
-            cout << arr[i] << " ";
-        }
-        cout << "\n";
-        return;
+        mpp[it]++;
     }
-    if (k == 0)
+    int n=s.size();
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
+        int c1=mpp['R'];
+        int c2=mpp['S'];
+        int c3=mpp['P'];
+        int mx=max({c1,c2,c3});
+        if(c1==mx)
         {
-            cout << -arr[i] << " ";
+            ans+="P";
         }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
+        else if(c2==mx)
         {
-            arr[i] = -1000;
+            ans+="R";
         }
-        for (int j = 0; j < n; j++)
+        else
         {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
-            {
-                arr[x]=-1000;
-            }
-            break;
+            ans+="S";
         }
     }
-    for(auto it:arr)
-    {
-        cout<<it<<" ";
-    }
-    cout<<"\n";
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -165,3 +109,7 @@ int32_t main()
     }
     return 0;
 }
+// 3
+// RRRR
+// RSP
+// S

@@ -22,6 +22,7 @@ typedef vector<ll> vi;
 typedef vector<vector<int>> vii;
 typedef vector<pair<int, int>> vpi;
 typedef pair<int, int> pi;
+typedef long double var;
 void reverse(int lo, int hi, vector<int> &arr)
 {
     while (lo <= hi)
@@ -63,94 +64,25 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    ll n;
-    cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    var n;
+    cin>>n;
+    if(n==2)
     {
-        for (int i = 0; i < n; i++)
-        {
-            cout << arr[i] << " ";
-        }
-        cout << "\n";
+        var x=1;
+        cout<<x<<"\n";
         return;
     }
-    if (k == 0)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            cout << -arr[i] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
-        {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
-            {
-                arr[x]=-1000;
-            }
-            break;
-        }
-    }
-    for(auto it:arr)
-    {
-        cout<<it<<" ";
-    }
-    cout<<"\n";
+    n=n*2;
+    var four=4;
+    var w=180;
+    var xDegrees=w/n;
+    var one=1;
+    // setprecision(10);
+    var ans=one/(tan((xDegrees*3.14159265359)/w));
+    cout<<setprecision(12)<<ans<<"\n";
 }
 int32_t main()
 {

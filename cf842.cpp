@@ -1,8 +1,3 @@
-// template taken from Striver_79
-// Remember you were also a novice when you started
-// hence never be rude to anyone who wants to learn something
-// Never open a ranklist untill and unless you are done with solving problems, wastes 3/4 minuts
-// Donot treat CP as a placement thing, love it and enjoy it, you will succeed for sure.
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
@@ -63,90 +58,109 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    vi arr(n, 0);
+    bool b=false;
+    map<int,int> mpp;
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        cin >> arr[i];
+        mpp[arr[i]]++;
+        if(mpp[arr[i]]>2)
         {
-            cout << arr[i] << " ";
+            b=true;
         }
-        cout << "\n";
+    }
+    if(b)
+    {
+        cout<<"NO\n";
         return;
     }
-    if (k == 0)
+    vi p(n,0);
+    vi q(n,0);
+    set<int> s;
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
+        if(s.find(arr[i])==s.end())
         {
-            cout << -arr[i] << " ";
+            p[i]=arr[i];
         }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
+        else
         {
-            arr[i] = -1000;
+            q[i]=arr[i];
         }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
+        s.insert(arr[i]);
     }
-    i--;
-    for(int j=1;j<=1000;j++)
+    set<int> s1;
+    set<int> s2;
+    for(int i=1;i<=n;i++)
     {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
+        s1.insert(i);
+        s2.insert(i);
+    }
+    for(auto it:p)
+    {
+        s1.erase(it);
+    }
+    for(auto it:q)
+    {
+        s2.erase(it);
+    }
+    for(int i=0;i<n;i++)
+    {
+        if(p[i]==0)
         {
-            for(int x=i+1;x<n;x++)
+            auto it=s1.lower_bound(q[i]);
+            if(*it==q[i])
             {
-                arr[x]=-1000;
+                p[i]=q[i];
+                s1.erase(it);
             }
-            break;
+            else
+            {
+                if(it==s1.begin())
+                {
+                    cout<<"NO\n";
+                    return;
+                }
+                it--;
+                p[i]=*it;
+                s1.erase(it);
+            }
+            
+        }
+        else if(q[i]==0)
+        {
+            auto it=s2.lower_bound(p[i]);
+            if(*it==p[i])
+            {
+                q[i]=p[i];
+                s2.erase(it);
+            }
+            else
+            {
+                if(it==s2.begin())
+                {
+                    cout<<"NO\n";
+                    return;
+                }
+                it--;
+                q[i]=*it;
+                s2.erase(it);
+            }
         }
     }
-    for(auto it:arr)
+    cout<<"YES\n";
+    for(auto it:p)
+    {
+        cout<<it<<" ";
+    }
+    cout<<"\n";
+    for(auto it:q)
     {
         cout<<it<<" ";
     }

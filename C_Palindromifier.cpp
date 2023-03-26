@@ -63,94 +63,23 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    ll n;
-    cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    string s;
+    cin>>s;
+    string rev=s;
+    ll n=s.size();
+    reverse(rev.begin(),rev.end());
+    if(s==rev)
     {
-        for (int i = 0; i < n; i++)
-        {
-            cout << arr[i] << " ";
-        }
-        cout << "\n";
+        cout<<"0\n";
         return;
     }
-    if (k == 0)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            cout << -arr[i] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
-        {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
-            {
-                arr[x]=-1000;
-            }
-            break;
-        }
-    }
-    for(auto it:arr)
-    {
-        cout<<it<<" ";
-    }
-    cout<<"\n";
+    cout<<3<<"\n";
+    cout<<"R"<<" "<<n-1<<"\n";
+    cout<<"L"<<" "<<n<<"\n";
+    cout<<"L"<<" "<<2<<"\n";
 }
 int32_t main()
 {
@@ -158,7 +87,7 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
         solve();

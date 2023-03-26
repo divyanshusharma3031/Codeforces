@@ -1,8 +1,3 @@
-// template taken from Striver_79
-// Remember you were also a novice when you started
-// hence never be rude to anyone who wants to learn something
-// Never open a ranklist untill and unless you are done with solving problems, wastes 3/4 minuts
-// Donot treat CP as a placement thing, love it and enjoy it, you will succeed for sure.
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
@@ -63,94 +58,78 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
+    vi arr(n, 0);
     ll k;
     cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    for (int i = 0; i < n; i++)
     {
-        for (int i = 0; i < n; i++)
+        cin >> arr[i];
+    }
+    vi pref = arr;
+    for (int i = 1; i < n; i++)
+    {
+        pref[i] = pref[i - 1] + arr[i];
+    }
+    int s = pref[k - 1];
+    bool b = true;
+    for (int i = 0; i < n; i++)
+    {
+        if (s <= pref[i])
         {
-            cout << arr[i] << " ";
         }
-        cout << "\n";
+        else
+        {
+            b = false;
+        }
+    }
+    if (b)
+    {
+        cout << 0 << "\n";
         return;
     }
-    if (k == 0)
+    int c = 0;
+    b = false;
+    for (int i = 0; i < k; i++)
     {
-        for (int i = 0; i < n; i++)
+        if (pref[i] < s)
         {
-            cout << -arr[i] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
-        {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
-            {
-                arr[x]=-1000;
-            }
+            b = true;
             break;
         }
     }
-    for(auto it:arr)
+    if (b)
     {
-        cout<<it<<" ";
+        c++;
+        arr[k - 1] = -arr[k - 1];
     }
-    cout<<"\n";
+    pref = arr;
+    for (int i = 1; i < n; i++)
+    {
+        pref[i] = pref[i - 1] + arr[i];
+    }
+    int ci=0;
+    s = pref[k - 1];
+    for(int i=k;i<n;i++)
+    {
+        if((pref[i]+ci)<s)
+        {
+            c++;
+            if(arr[i]>0)
+            {
+                ci=ci+2*arr[i];
+            }
+            else
+            {
+                ci=ci-2*arr[i];
+            }
+        }
+    }
+    cout<<c<<"\n";
 }
 int32_t main()
 {

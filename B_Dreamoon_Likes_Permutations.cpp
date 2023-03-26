@@ -63,94 +63,49 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    vi arr(n,0);
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            cout << arr[i] << " ";
-        }
-        cout << "\n";
-        return;
+        cin>>arr[i];
     }
-    if (k == 0)
+    vector<int> permutation(n,0);
+    set<int> s;
+    for(int i=n-1;i>=0;i--)
     {
-        for (int i = 0; i < n; i++)
+        if(s.find(arr[i])!=s.end())
         {
-            cout << -arr[i] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
-        {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
-            {
-                arr[x]=-1000;
-            }
             break;
         }
+        s.insert(arr[i]);
+        if(s.size()==*(s.rbegin()))
+        {
+            permutation[i]=true;
+        }
     }
-    for(auto it:arr)
+    set<int> s2;
+    vector<pi> ans;
+    for(int i=0;i<n-1;i++)
     {
-        cout<<it<<" ";
+        if(s2.find(arr[i])!=s2.end())
+        {
+            break;
+        }
+        s2.insert(arr[i]);
+        if(permutation[i+1] && s2.size()==*(s2.rbegin()))
+        {
+            ans.push_back({i+1,n-i-1});
+        }
     }
-    cout<<"\n";
+    cout<<ans.size()<<"\n";
+    for(auto it:ans)
+    {
+        cout<<it.first<<" "<<it.second<<"\n";
+    }
 }
 int32_t main()
 {

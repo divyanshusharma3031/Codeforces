@@ -63,94 +63,41 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    vector<pi> v;
+    multiset<int> ms;
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
+        int a;
+        cin>>a;
+        int b;
+        cin>>b;
+        v.push_back({b,a});
+    }
+    sort(v.begin(),v.end());
+    // isi order mai exam dega always
+    int mx=v[0].second;
+    int ans=mx;
+    for(int i=0;i<n;i++)
+    {
+        auto it=ms.upper_bound(v[i].second);
+        mx=max(mx,v[i].second);
+        if(it==ms.end())
         {
-            cout << arr[i] << " ";
+            mx=max(mx,v[i].first);
+            ans=v[i].first;
         }
-        cout << "\n";
-        return;
-    }
-    if (k == 0)
-    {
-        for (int i = 0; i < n; i++)
+        else
         {
-            cout << -arr[i] << " ";
+            ans=mx;
         }
-        cout << "\n";
-        return;
+        ms.insert(v[i].second);
     }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
-    {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
-        {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
-            {
-                arr[x]=-1000;
-            }
-            break;
-        }
-    }
-    for(auto it:arr)
-    {
-        cout<<it<<" ";
-    }
-    cout<<"\n";
+    cout<<ans<<" ";
 }
 int32_t main()
 {
@@ -158,10 +105,17 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
+// 1 3
+// 2 4
+// 2 5
+
+// 1 6
+// 2 5
+// 3 4

@@ -63,94 +63,55 @@ vi getbinary(int n)
     }
     return ans;
 }
-int countsubarrays(vector<int> &arr,int i,int j)
-{
-    int c=0;
-    for(;i<=j;i++)
-    {
-        int s=0;
-        for(int x=i;x<=j;x++)
-        {
-            s=s+arr[x];
-            if(s>0)
-            {
-                c++;
-            }
-            if(s==0)
-            {
-                return -1;
-            }
-        }
-    }
-    return c;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    ll k;
-    cin >> k;
-    int total = n * (n + 1) / 2; // the total subarrays
-    // k subarrays with positive sum
-    // size*(size+1)=k;
-    vi arr(n, 2);
-    if (total == k)
+    ll m;
+    cin>>m;
+    vector<string> v;
+    for(int i=0;i<n;i++)
     {
-        for (int i = 0; i < n; i++)
-        {
-            cout << arr[i] << " ";
-        }
-        cout << "\n";
-        return;
+        string s;
+        cin>>s;
+        v.push_back(s);
     }
-    if (k == 0)
+    int dp[n][m];
+    memset(dp,0,sizeof(dp));
+    for(int i=0;i<m;i++)
     {
-        for (int i = 0; i < n; i++)
+        if(v[n-1][i]=='*')
         {
-            cout << -arr[i] << " ";
+            dp[n-1][i]=1;
         }
-        cout << "\n";
-        return;
     }
-    int sz = 0;
-    int i = 0;
-    while (sz * (sz + 1) < 2 * k)
+    for(int i=n-2;i>=0;i--)
     {
-        sz++;
-        i++;
-    }
-    if ((2 * k) == (sz * (sz + 1)))
-    {
-        for (; i < n; i++)
+        for(int j=0;j<m;j++)
         {
-            arr[i] = -1000;
-        }
-        for (int j = 0; j < n; j++)
-        {
-            cout << arr[j] << " ";
-        }
-        cout << "\n";
-        return;
-    }
-    i--;
-    for(int j=1;j<=1000;j++)
-    {
-        arr[i]=-j;
-        if(countsubarrays(arr,0,i)==k)
-        {
-            for(int x=i+1;x<n;x++)
+            if(v[i][j]=='*')
             {
-                arr[x]=-1000;
+                if(j==0 || j==m-1)
+                {
+                    dp[i][j]=1;
+                }
+                else
+                {
+                    dp[i][j]=min({dp[i+1][j-1],dp[i+1][j+1],dp[i+1][j]})+1;
+                }
             }
-            break;
         }
     }
-    for(auto it:arr)
+    int s=0;
+    for(int i=0;i<n;i++)
     {
-        cout<<it<<" ";
+        for(int j=0;j<m;j++)
+        {
+            s+=dp[i][j];
+        }
     }
-    cout<<"\n";
+    cout<<s<<"\n";
 }
 int32_t main()
 {
