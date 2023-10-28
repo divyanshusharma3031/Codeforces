@@ -3,6 +3,7 @@
 // hence never be rude to anyone who wants to learn something
 // Never open a ranklist untill and unless you are done with solving problems, wastes 3/4 minuts
 // Donot treat CP as a placement thing, love it and enjoy it, you will succeed for sure.
+// The goal is to solve problems most efficiently not just barely
 #include <bits/stdc++.h>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
@@ -22,75 +23,70 @@ typedef vector<ll> vi;
 typedef vector<vector<int>> vii;
 typedef vector<pair<int, int>> vpi;
 typedef pair<int, int> pi;
-void reverse(int lo, int hi, vector<int> &arr)
+void myerase(ordered_set &t, int v)
 {
-    while (lo <= hi)
-    {
-        swap(arr[lo], arr[hi]);
-        lo++;
-        hi--;
-    }
+    int rank = t.order_of_key(v);                     // Number of elements that are less than v in t
+    ordered_set::iterator it = t.find_by_order(rank); // Iterator that points to the (rank+1)th element in t
+    t.erase(it);
 }
-bool sign(int n)
+int power(long long x, unsigned int y, int p=1e9+7)
 {
-    return n >= 0;
-}
-inline int power(int a, int b)
-{
-    int x = 1;
-    while (b)
+    int res = 1; // Initialize result
+
+    x = x % p; // Update x if it is more than or
+               // equal to p
+
+    if (x == 0)
+        return 0; // In case x is divisible by p;
+
+    while (y > 0)
     {
-        if (b & 1)
-            x *= a;
-        a *= a;
-        b >>= 1;
+        // If y is odd, multiply x with result
+        if (y & 1)
+            res = (res * x) % p;
+
+        // y must be even now
+        y = y >> 1; // y = y/2
+        x = (x * x) % p;
     }
-    return x;
+    return res;
 }
-vi getbinary(int n)
-{
-    vector<int> ans;
-    if (n == 0)
-    {
-        ans.push_back(0);
-        return ans;
-    }
-    while (n > 0)
-    {
-        int rem = n % 2;
-        ans.push_back(rem);
-        n = n / 2;
-    }
-    return ans;
-}
-void solve()
+int arr[500001];
+void test()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    int s=0;
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin>>arr[i];
+        s+=arr[i];
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
+    int su=0;
+    if(s%3)
+    {
+        cout<<"0\n";
+        return;
+    }
+    s=s/3;
     int ans=0;
-    for(int i=0;i<n;i++)
+    int c1=0;
+    int c2=0;
+    int s2=0;
+    for(int i=0;i<n-1;i++)
     {
-        if(ans<=v[i].second)
+        s2+=arr[i];
+        if(s2==(2*s))
         {
-            ans=v[i].second;
+            c2+=c1;
         }
-        else
+        if(s==s2)
         {
-            ans=v[i].first;
+            c1++;
         }
     }
-    cout<<ans<<" ";
+    cout<<c2<<"\n";
 }
 int32_t main()
 {
@@ -101,10 +97,7 @@ int32_t main()
     // cin >> t;
     while (t--)
     {
-        solve();
+        test();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

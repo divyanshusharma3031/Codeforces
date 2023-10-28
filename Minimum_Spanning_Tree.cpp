@@ -68,29 +68,51 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    ll m;
+    cin>>m;
+    vector<pi> adj[n+1];
+    for(int i=0;i<m;i++)
     {
         int a;
         int b;
         cin>>a>>b;
-        v.push_back({a,b});
+        int price;
+        cin>>price;
+        adj[a].push_back({b,price});
+        adj[b].push_back({a,price});
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    priority_queue<pi,vpi,greater<pi>> pq;
+    for(auto it:adj[1])
     {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
+        pq.push({it.second,it.first});
     }
-    cout<<ans<<" ";
+    vector<int> included(n+1,0);
+    included[1]=1;
+    int ans=0;
+    while(!pq.empty())
+    {
+        auto it=pq.top();
+        pq.pop();
+        while(!pq.empty() && included[it.second])
+        {
+            it=pq.top();
+            pq.pop();
+        }
+        if(included[it.second])
+        {
+            break;
+        }
+        ans=ans+it.first;
+        for(auto x:adj[it.second])
+        {
+            if(!included[x.first])
+            {
+                pq.push({x.second,x.first});
+            }
+        }
+        included[it.second]=1;
+    }
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -105,6 +127,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

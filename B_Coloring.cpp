@@ -68,29 +68,27 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    ll m;
+    cin>>m;
+    ll k;
+    cin>>k;
+    vi freq(m,0);
+    for(int i=0;i<m;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin>>freq[i];
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    // now i have every element freq<=(n+1)/2.
+    sort(freq.begin(),freq.end(),greater<int>());
+    for(int i=0;i<m;i++)
     {
-        if(ans<=v[i].second)
+        int endcell=i+(freq[i]-1)*k;
+        if(endcell>=n)
         {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
+            cout<<"NO\n";
+            return;
         }
     }
-    cout<<ans<<" ";
+    cout<<"YES\n";
 }
 int32_t main()
 {
@@ -98,13 +96,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

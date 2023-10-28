@@ -68,29 +68,15 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
-    {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
-    }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
-    }
-    cout<<ans<<" ";
+    int x1,y1;
+    cin>>x1>>y1;
+    int x2,y2;
+    cin>>x2>>y2;
+    int mn=min(x1-1,n-x1);
+    int mn2=min(y1-1,n-y1);
+    int mn3=min(x2-1,n-x2);
+    int mn4=min(y2-1,n-y2);
+    cout<<abs(min(mn,mn2)-min(mn3,mn4))<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +84,15 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1
+// 
+// 1 2 3 4
+// 5 6 7 8
+// 9 a b c
+// d e f g

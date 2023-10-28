@@ -68,29 +68,46 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    ll s1;
+    ll s2;
+    cin >> s1 >> s2;
+    vi arr(n, 0);
+    priority_queue<pi> pq;
+    for (int i = 0; i < n; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin >> arr[i];
+        pq.push({arr[i], i + 1});
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    // first wala s1 seconds
+    // secibd wala s2 seconds
+    vector<int> v;
+    vector<int> v2;
+    while (!pq.empty())
     {
-        if(ans<=v[i].second)
+        int time1 = (v.size() + 1) * s1;
+        int time2 = (v2.size() + 1) * s2;
+        if (time1 <= time2)
         {
-            ans=v[i].second;
+            v.push_back(pq.top().second);
         }
         else
         {
-            ans=v[i].first;
+            v2.push_back(pq.top().second);
         }
+        pq.pop();
     }
-    cout<<ans<<" ";
+    cout << v.size() << " ";
+    for (auto it : v)
+    {
+        cout << it << " ";
+    }
+    cout << "\n";
+    cout << v2.size() << " ";
+    for (auto it : v2)
+    {
+        cout << it << " ";
+    }
+    cout << "\n";
 }
 int32_t main()
 {
@@ -98,13 +115,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

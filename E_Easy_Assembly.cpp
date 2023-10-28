@@ -68,29 +68,45 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vector<vector<int>> matrix;
+    for (int i = 0; i < n; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        ll m;
+        cin >> m;
+        vi arr(m, 0);
+        for (int j = 0; j < m; j++)
+        {
+            cin >> arr[j];
+        }
+        matrix.push_back(arr);
+    }
+    vector<int> v;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < matrix[i].size(); j++)
+        {
+            v.push_back(matrix[i][j]);
+        }
     }
     sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    map<int, int> mpp;
+    for (int i = 0; i < v.size(); i++)
     {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
+        mpp[v[i]] = i;
     }
-    cout<<ans<<" ";
+    int blocks = n;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 1; j < matrix[i].size(); j++)
+        {
+            if ((mpp[matrix[i][j]] - 1) != mpp[matrix[i][j - 1]])
+            {
+                blocks++;
+            }
+        }
+        // cout<<blocks<<" ";
+    }
+    cout<<blocks-n<<" "<<blocks-1<<"\n";
 }
 int32_t main()
 {
@@ -105,6 +121,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

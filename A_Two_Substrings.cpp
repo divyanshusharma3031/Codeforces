@@ -66,31 +66,53 @@ vi getbinary(int n)
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    ll n;
-    cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    string s;
+    cin>>s;
+    vector<int> v;
+    vector<int> v2;
+    vector<int> v3;
+    vector<int> v4;
+    int n=s.size();
+    for(int i=0;i<n-1;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
-    }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
+        if(s[i]=='A' && s[i+1]=='B')
         {
-            ans=v[i].second;
+            v.push_back(i+1);
+            v3.push_back(i);
+        }
+        else if(s[i]=='B' && s[i+1]=='A')
+        {
+            v2.push_back(i);
+            v4.push_back(i+1);
+        }
+    }
+    for(int i=0;i<v.size();i++)
+    {
+        auto it=upper_bound(v2.begin(),v2.end(),v[i]);
+        if(it==v2.end())
+        {
+
         }
         else
         {
-            ans=v[i].first;
+            cout<<"YES\n";
+            return;
         }
     }
-    cout<<ans<<" ";
+    for(int i=0;i<v4.size();i++)
+    {
+        auto it=upper_bound(v3.begin(),v3.end(),v4[i]);
+        if(it==v3.end())
+        {
+
+        }
+        else
+        {
+            cout<<"YES\n";
+            return;
+        }
+    }
+    cout<<"NO\n";
 }
 int32_t main()
 {
@@ -105,6 +127,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

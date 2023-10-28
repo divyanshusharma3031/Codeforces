@@ -63,48 +63,93 @@ vi getbinary(int n)
     }
     return ans;
 }
+int dfs(int node,vector<int> adj[],vector<int> &vis,vector<int> &nodes)
+{
+    if(vis[node])
+    {
+        return 0;
+    }
+    vis[node]=1;
+    int c=1;
+    for(auto it:adj[node])
+    {
+        c=c+dfs(it,adj,vis,nodes);
+    }
+    return nodes[node]=c;
+}
+void Solve(int node,int parent,vector<int> adj[],vector<int> &vis,vector<int> &nodes,int &ans,int count)
+{
+    
+    if(vis[node])
+    {
+        return;
+    }
+    vis[node]=1;
+    vector<int> v;
+    for(auto it:adj[node])
+    {
+        if(it!=parent)
+        {
+            v.push_back(nodes[it]);
+        }
+    }
+    if(v.size()<2)
+    {
+        v.push_back(0);
+    }
+    for(int i=0;i<v.size();i++)
+    {
+        ans=max(count+v[i],ans);
+    }
+    int j=1;
+    for(auto it:adj[node])
+    {
+        if(it!=parent)
+        {
+            Solve(it,node,adj,vis,nodes,ans,count+v[j]);
+            j--;
+        }
+    }
+    return ;
+}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vector<int> adj[n + 1];
+    for (int i = 0; i < n-1; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        int x;
+        cin >> x;
+        int y;
+        cin >> y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
+    vector<int> vis(n+1,0);
+    vector<int> nodes(n+1,0);
+    dfs(1,adj,vis,nodes);
+    for(int i=1;i<=n;i++)
+    {
+        vis[i]=0;
+        nodes[i]--;
+    }
     int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
-    }
-    cout<<ans<<" ";
+    int count=0;
+    Solve(1,-1,adj,vis,nodes,ans,count);
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
     // hamare saath shree raghunath to kisi baat ki chinta nahi
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

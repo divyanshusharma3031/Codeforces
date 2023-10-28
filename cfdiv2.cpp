@@ -22,75 +22,38 @@ typedef vector<ll> vi;
 typedef vector<vector<int>> vii;
 typedef vector<pair<int, int>> vpi;
 typedef pair<int, int> pi;
-void reverse(int lo, int hi, vector<int> &arr)
-{
-    while (lo <= hi)
-    {
-        swap(arr[lo], arr[hi]);
-        lo++;
-        hi--;
-    }
-}
-bool sign(int n)
-{
-    return n >= 0;
-}
-inline int power(int a, int b)
-{
-    int x = 1;
-    while (b)
-    {
-        if (b & 1)
-            x *= a;
-        a *= a;
-        b >>= 1;
-    }
-    return x;
-}
-vi getbinary(int n)
-{
-    vector<int> ans;
-    if (n == 0)
-    {
-        ans.push_back(0);
-        return ans;
-    }
-    while (n > 0)
-    {
-        int rem = n % 2;
-        ans.push_back(rem);
-        n = n / 2;
-    }
-    return ans;
-}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vector<pi> v;
+    for (int i = 0; i < n; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        int x;
+        cin >> x;
+        int y;
+        cin >> y;
+        v.push_back({x, y});
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    ll ans = v[0].second;
+    ll c=1;
+    // ans contains LCM of arr[0], ..arr[i]
+    // after i'th iteration,
+    int gcd=v[0].first*v[0].second;
+    for (int i = 1; i < n; i++)
     {
-        if(ans<=v[i].second)
+        ans = (((v[i].second * ans)) /
+               (__gcd(v[i].second, ans)));
+        gcd=__gcd(gcd,v[i].first*v[i].second);
+        if(gcd%ans)
         {
+            c++;
             ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
+            gcd=v[i].first*v[i].second;
         }
     }
-    cout<<ans<<" ";
+    cout<<c<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +61,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

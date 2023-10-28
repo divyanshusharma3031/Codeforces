@@ -68,29 +68,27 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    ll d;
+    cin>>d;
+    string s;
+    cin>>s;
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
-    }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
+        if((s[i]-'0')>=d)
         {
-            ans=v[i].second;
+            // skip
         }
         else
         {
-            ans=v[i].first;
+            string temp1=s.substr(0,i);
+            string temp2=s.substr(i);
+            string temp3=temp1+to_string(d)+temp2;
+            cout<<temp3<<"\n";
+            return;
         }
     }
-    cout<<ans<<" ";
+    string temp3=s+to_string(d);
+    cout<<temp3<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +96,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

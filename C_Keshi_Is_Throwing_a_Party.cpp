@@ -63,34 +63,50 @@ vi getbinary(int n)
     }
     return ans;
 }
+bool check(int x,vpi &vect)
+{
+    int n=vect.size();
+    ll takenSoFar = 0;
+    for(ll i=n-1; i>=0; i--) {
+        if(vect[i].second >=( x - takenSoFar - 1) && (vect[i].first - takenSoFar) >= 0) {
+            takenSoFar++;
+        }
+    }
+    return takenSoFar >= x;
+}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    vi a(n,0);
+    vi b(n,0);
+    vpi arr;
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin>>a[i]>>b[i];
+        arr.push_back({a[i],b[i]});
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
+    // atmost a[i] richer than him and atmost b[i] poorer than him
+    // ith friend has (i+1) dollar //according to 0-based indexing.
+    int lo=0;
+    int hi=n;
     int ans=0;
-    for(int i=0;i<n;i++)
+    while(lo<=hi)
     {
-        if(ans<=v[i].second)
+        int mid=(lo+hi)/2;
+        if(check(mid,arr))
         {
-            ans=v[i].second;
+            ans=mid;
+            // cout<<ans<<"\n";
+            lo=mid+1;
         }
         else
         {
-            ans=v[i].first;
+            hi=mid-1;
         }
     }
-    cout<<ans<<" ";
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +114,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

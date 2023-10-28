@@ -68,29 +68,58 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    if (n == 2)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cout << 0 << "\n";
+        return;
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    if (n % 2)
     {
-        if(ans<=v[i].second)
+        int y = (n - 1) / 2;
+        vector<int> ans(n * y, 1);
+        int count = n - 1;
+        for (int i = 0; i < n * y;)
         {
-            ans=v[i].second;
+            for (int j = i + y; j < i + count; j++)
+            {
+                ans[j] = -1;
+            }
+            i += count;
+            count--;
         }
-        else
+        for (auto it : ans)
         {
-            ans=v[i].first;
+            cout << it << " ";
         }
+        cout << "\n";
+        return;
     }
-    cout<<ans<<" ";
+    else
+    {
+        int y = (n - 2) / 2;
+        vector<int> ans(n / 2 * (n - 1), 1);
+        int count = n - 1;
+        for (int i = 0; i < ans.size();)
+        {
+            if((y)>(count-1))
+            {
+                break;
+            }
+            ans[i + y] = 0;
+            for (int j = i + y + 1; j < i + count; j++)
+            {
+                ans[j] = -1;
+            }
+            i += count;
+            count--;
+        }
+        for (auto it : ans)
+        {
+            cout << it << " ";
+        }
+        cout << "\n";
+        return;
+    }
 }
 int32_t main()
 {
@@ -98,13 +127,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

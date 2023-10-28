@@ -68,29 +68,50 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vi arr(n, 0);
+    for (int i = 0; i < n; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin >> arr[i];
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    if (n % 2 == 0)
     {
-        if(ans<=v[i].second)
+        for (int i = n - 1; i >= n / 2; i--)
         {
-            ans=v[i].second;
+            cout << -arr[i] << " ";
         }
-        else
+        for (int i = n / 2 - 1; i >= 0; i--)
         {
-            ans=v[i].first;
+            cout << arr[i] << " ";
         }
+        cout << "\n";
+        return;
     }
-    cout<<ans<<" ";
+    int s = 0;
+    for(int i=n-4;i>=(n-3)/2;i--)
+    {
+        cout<<-arr[i]<<" ";
+    }
+    for(int i=(n-3)/2-1;i>=0;i--)
+    {
+        cout<<arr[i]<<" ";
+    }
+    vector<int> b;
+    for(int i=n-3;i<n;i++)
+    {
+        b.push_back(arr[i]);
+    }
+    if((b[0]+b[1])!=0)
+    {
+        cout<<-b[2]<<" "<<-b[2]<<" "<<b[0]+b[1]<<"\n";
+    }
+    else if((b[1]+b[2])!=0)
+    {
+        cout<<b[1]+b[2]<<" "<<-b[0]<<" "<<-b[0]<<"\n";
+    }
+    else
+    {
+        cout<<-b[1]<<" "<<b[0]+b[2]<<" "<<-b[1]<<"\n";
+    }
 }
 int32_t main()
 {
@@ -98,13 +119,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

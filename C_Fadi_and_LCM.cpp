@@ -68,29 +68,32 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vi v;
+    for(int i=1;i*i<=n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
-    }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
+        if(n%i==0)
         {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
+            v.push_back(i);
+            if((n/i)!=i)
+            {
+                v.push_back(n/i);
+            }
         }
     }
-    cout<<ans<<" ";
+    int ans=1e18;
+    int a=-1;
+    int b=-1;
+    for(auto it:v)
+    {
+        int w=max(it,n/it);
+        if(ans>w && __gcd(it,n/it)==1)
+        {
+            ans=w;
+            a=it;
+            b=n/it;
+        }
+    }
+    cout<<a<<" "<<b<<"\n";
 }
 int32_t main()
 {
@@ -105,6 +108,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

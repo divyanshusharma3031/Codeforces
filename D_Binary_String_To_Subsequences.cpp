@@ -68,29 +68,86 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    map<char,int> mpp;
+    string s;
+    cin>>s;
+    set<int> zeroes;
+    set<int> ones;
+    int c=0;
+    vector<int> ans(n,-1);
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
-    }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
+        if(s[i]=='0')
         {
-            ans=v[i].second;
+            if(ones.size())
+            {
+                auto it=ones.end();
+                it--;
+                ones.erase(it);
+            }
+            else
+            {
+                c++;
+                ans[i]=c;
+            }
+            zeroes.insert(i);
         }
         else
         {
-            ans=v[i].first;
+            if(zeroes.size())
+            {
+                auto it=zeroes.end();
+                it--;
+                zeroes.erase(it);
+            }
+            else
+            {
+                c++;
+                ans[i]=c;
+            }
+            ones.insert(i);
         }
     }
-    cout<<ans<<" ";
+    set<int> s1;
+    set<int> s2;
+    for(int i=0;i<n;i++)
+    {
+        if(ans[i]!=-1)
+        {
+            if(s[i]=='0')
+            {
+                s1.insert(i);
+            }
+            else
+            {
+                s2.insert(i);
+            }
+        }
+    }
+    for(int i=0;i<n;i++)
+    {
+        if(ans[i]==-1)
+        {
+            if(s[i]=='0')
+            {
+                ans[i]=ans[*s2.begin()];
+                s2.erase(s2.begin());
+                s1.insert(i);
+            }
+            else
+            {
+                ans[i]=ans[*s1.begin()];
+                s1.erase(s1.begin());
+                s2.insert(i);
+            }
+        }
+    }
+    cout<<c<<"\n";
+    for(int i=0;i<n;i++)
+    {
+        cout<<ans[i]<<" ";
+    }
+    cout<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +155,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

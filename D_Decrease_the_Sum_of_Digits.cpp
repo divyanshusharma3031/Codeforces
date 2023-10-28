@@ -68,29 +68,49 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    ll s;
+    cin >> s;
+    string str = to_string(n);
+    int sum = 0;
+    for (int i = 0; i < str.size(); i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        sum = sum + str[i] - '0';
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    if (sum <= s)
     {
-        if(ans<=v[i].second)
+        cout << "0\n";
+        return;
+    }
+    reverse(str.begin(), str.end());
+    // cout<<str<<"\n";
+    int ans = 0;
+    int c = 0;
+    for (int i = 0; i < str.size(); i++)
+    {
+        if (str[i] != '0')
         {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
+            string temp=str;
+            reverse(temp.begin(),temp.end());
+            int a = stoll(temp);
+            int b = (power(10,i+1) - (str[i] - '0')*power(10,i));
+            int c = a + b;
+            str = to_string(c);
+            reverse(str.begin(),str.end());
+            sum = 0;
+            for (int i = 0; i < str.size(); i++)
+            {
+                sum = sum + str[i] - '0';
+            }
+            if(sum<=s)
+            {
+                break;
+            }
         }
     }
-    cout<<ans<<" ";
+    // 220,000,000,000,000
+    reverse(str.begin(),str.end());
+    int n2=stoll(str);
+    cout<<n2-n<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +118,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

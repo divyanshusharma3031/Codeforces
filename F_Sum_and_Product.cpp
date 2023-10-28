@@ -63,34 +63,77 @@ vi getbinary(int n)
     }
     return ans;
 }
+int mySqrt(int x)
+{
+    int lo = 0;
+    int hi = 1e9+1e9+1e9;
+    int mid = 0;
+    while (lo <= hi)
+    {
+
+        mid = (lo + hi) / 2;
+        if (x < mid * mid)
+        {
+            hi = mid - 1;
+            mid--;
+        }
+        else
+        {
+            lo = mid + 1;
+        }
+    }
+    return mid;
+}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vector<int> arr(n, 0);
+    map<int, int> mpp;
+    for (int i = 0; i < n; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin >> arr[i];
+        mpp[arr[i]]++;
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    int q;
+    cin >> q;
+    for (int i = 0; i < q; i++)
     {
-        if(ans<=v[i].second)
+        int x;
+        int y;
+        cin >> x >> y;
+        int val = x * x - 4 * y;
+        if (val < 0)
         {
-            ans=v[i].second;
+            cout << "0 ";
         }
         else
         {
-            ans=v[i].first;
+            int sq = mySqrt(val);
+            int nval=sq*sq;
+            if(nval!=val)
+            {
+                cout<<"0 ";
+            }
+            else
+            {
+                int find=(x+sq)/2;
+                int comp=x-find;
+                if(find==comp)
+                {
+                    cout<<(mpp[find]*(mpp[find]-1))/2<<" ";
+                }
+                else
+                {
+                    int c1=mpp[find];
+                    int c2=mpp[comp];
+                    cout<<c1*c2<<" ";
+                }
+            }
         }
     }
-    cout<<ans<<" ";
+    cout<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +141,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

@@ -63,34 +63,41 @@ vi getbinary(int n)
     }
     return ans;
 }
+int solve(int i, int n, vector<vi> &arr, int choose,vii &dp)
+{
+    if (i >= n)
+    {
+        return 0;
+    }
+    if(dp[i][choose]!=-1)
+    {
+        return dp[i][choose];
+    }
+    if (choose == 0)
+    {
+        return dp[i][choose]=max({arr[0][i] + solve(i + 1, n, arr, 1,dp), arr[1][i] + solve(i + 1, n, arr, 2,dp), solve(i + 1, n, arr, choose,dp)});
+    }
+    if (choose == 1)
+    {
+        return dp[i][choose]=max({arr[1][i] + solve(i + 1, n, arr, 2,dp), solve(i + 1, n, arr, choose,dp)});
+    }
+    return dp[i][choose]=max({arr[0][i] + solve(i + 1, n, arr, 1,dp), solve(i + 1, n, arr, choose,dp)});
+}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vector<vector<int>> arr(2, vector<int>(n, 0));
+    vector<vector<int>> dp(n+1,vector<int>(3,-1));
+    for (int i = 0; i < 2; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
-    }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
+        for (int j = 0; j < n; j++)
         {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
+            cin >> arr[i][j];
         }
     }
-    cout<<ans<<" ";
+    cout << solve(0, n, arr, 0,dp) << "\n";
 }
 int32_t main()
 {
@@ -105,6 +112,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

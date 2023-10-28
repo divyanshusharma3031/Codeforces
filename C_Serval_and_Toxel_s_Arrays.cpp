@@ -68,29 +68,35 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    ll m;
+    cin>>m;
+    map<int,int> mpp;
+    vi arr(n,0);
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin>>arr[i];
+        mpp[arr[i]]+=(m+1);//assuming ki sabmne present hoga
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
+    for(int i=0;i<m;i++)
+    {
+        int x;
+        int y;
+        cin>>x>>y;
+        x--;
+        int prev=arr[x];
+        arr[x]=y;
+        mpp[prev]-=(m-i);
+        mpp[y]+=(m-i);
+    }
     int ans=0;
-    for(int i=0;i<n;i++)
+    for(auto it:mpp)
     {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
+        int count=it.second;
+        int notpresent=(m+1)-count;
+        ans=ans+count*notpresent;
+        ans=ans+(count*(count-1))/2;
     }
-    cout<<ans<<" ";
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +104,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

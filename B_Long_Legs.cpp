@@ -66,31 +66,20 @@ vi getbinary(int n)
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    ll n;
-    cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    ll a;
+    ll b;
+    cin>>a>>b;
+    ll ans = LLONG_MAX;
+    for (ll i = 0; i <= 100'000; ++i)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        ll m = i + 1;
+        ll ops = i;
+        ops += (a + m - 1) / m;
+        ops += (b + m - 1) / m;
+        ans = min(ans, ops);
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
-    }
-    cout<<ans<<" ";
+
+    cout << ans << '\n';
 }
 int32_t main()
 {
@@ -98,13 +87,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

@@ -68,29 +68,61 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    ll k;
+    cin>>k;
+    string s;
+    cin >> s;
+    string t;
+    cin >> t;
+    if (s == t)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cout << "YES\n";
+        return;
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    if (n <= 3)
     {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
+        cout << "NO\n";
+        return;
     }
-    cout<<ans<<" ";
+    if (n == 4)
+    {
+        swap(s[0], s[3]);
+        if (s == t)
+        {
+            cout << "YES\n";
+            return;
+        }
+        cout << "NO\n";
+        return;
+    }
+    if (n >= 6)
+    {
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        if (s == t)
+        {
+            cout << "YES\n";
+            return;
+        }
+        cout << "NO\n";
+        return;
+    }
+    if (s[2] != t[2])
+    {
+        cout << "NO\n";
+        return;
+    }
+    int ele = s[2];
+    sort(s.begin(),s.end());
+    do
+    {
+        if (s == t && s[2] == ele)
+        {
+            cout << "YES\n";
+            return;
+        }
+    } while (next_permutation(s.begin(), s.end()));
+    cout << "NO\n";
 }
 int32_t main()
 {
@@ -98,13 +130,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

@@ -68,29 +68,41 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    vi arr(n, 0);
+    ll x;
+    cin>>x;
+    for (int i = 0; i < n; i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        cin >> arr[i];
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
+    sort(arr.begin(),arr.end());
     int ans=0;
-    for(int i=0;i<n;i++)
+    for(int i=0;i<30;i++)
     {
-        if(ans<=v[i].second)
+        int y=0;
+        for(int j=0;j<n;j++)
         {
-            ans=v[i].second;
+            int bit=arr[j]>>i;
+            bit=bit&1;
+            y=y|(1<<(bit));
         }
-        else
+        if(y!=3)
         {
-            ans=v[i].first;
+            continue;
         }
+        ll temp=x;
+        if(temp&(1<<i))
+        {
+            // forming the answer if x ki ith bit set hai toh
+            temp=temp^(1<<i);
+            for(int j=i-1;j>=0;j--)
+            {
+                temp=temp|(1<<j);
+            }
+        }
+        ans=max(ans,temp);
     }
-    cout<<ans<<" ";
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -98,13 +110,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

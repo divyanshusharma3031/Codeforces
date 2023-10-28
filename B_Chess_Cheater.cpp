@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <deque>
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -28,80 +29,80 @@ void solve()
     ll n;
     cin >> n;
     ll k;
-    cin>>k;
+    cin >> k;
     string s;
-    cin>>s;
-    int c=0;
-    vector<int> pref(n+1,0);
-    for(int i=0;i<n;i++)
+    cin >> s;
+    vector<int> v;
+    int c = 0;
+    for (int i = 0; i < n; i++)
     {
-        pref[i]=c;
-        if(s[i]=='W')
+        if (s[i] == 'W')
         {
             c++;
         }
+    }
+    if (c == 0)
+    {
+        if (k == 0)
+            cout << 0 << "\n";
         else
-        {
-            c=0;
-        }
+            cout << 2 * k - 1 << "\n";
+        return;
     }
-    vi suff(n+1,0);
-    c=0;
-    for(int i=n-1;i>=0;i--)
+
+    int ws = 0;
+    for (int i = 0; i < n;)
     {
-        suff[i]=c;
-        if(s[i]=='W')
+        if (s[i] == 'W')
         {
-            c++;
-        }
-        else
-        {
-            c=0;
-        }
-    }
-    priority_queue<pi> pq;
-    for(int i=0;i<n;i++)
-    {
-        if(s[i]=='L')
-        {
-            pq.push({suff[i]+pref[i],i});
-        }
-    }
-    while(k>0 && !pq.empty())
-    {
-        auto it=pq.top();
-        s[it.second]='W';
-        pq.pop();
-        k--;
-    }
-    int ans=0;
-    cout<<s<<" ";
-    for(int i=0;i<n;i++)
-    {
-        if(i==0)
-        {
-            if(s[i]=='W')
+            int j = i + 1;
+            while (j < n && s[j] == 'W')
             {
-                ans++;
+                j++;
             }
-            continue;
+            ws++;
+            i = j;
         }
         else
         {
-            if(s[i]=='W')
-            {
-                if(s[i-1]=='W')
-                {
-                    ans+=2;
-                }
-                else
-                {
-                    ans++;
-                }
-            }
+            i++;
         }
     }
-    cout<<ans<<"\n";
+    vector<int> losing_streaks;
+    for (int i = 0; i < n; i++)
+    {
+        if (s[i] == 'L')
+        {
+            if (i == 0 or s[i - 1] == 'W')
+                losing_streaks.push_back(0);
+            losing_streaks.back()++;
+        }
+    }
+    if ((c + k) >= n)
+    {
+        cout << 2 * (n)-1 << "\n";
+        return;
+    }
+    int ans = 2 * (c + k);
+    if (s[0] == 'L')
+    {
+        losing_streaks[0] = 1e9;
+    }
+    if (s[n - 1] == 'L')
+    {
+        losing_streaks.back() = 1e9;
+    }
+    sort(losing_streaks.begin(), losing_streaks.end());
+    for (auto it : losing_streaks)
+    {
+        if (it > k)
+        {
+            break;
+        }
+        k -= it;
+        ws--;
+    }
+    cout << ans - ws << "\n";
 }
 int32_t main()
 {
@@ -116,3 +117,56 @@ int32_t main()
     }
     return 0;
 }
+
+// int c = 0;
+// vector<int> pref(n + 1, 0);
+// for (int i = 0; i < n; i++)
+// {
+//     pref[i] = c;
+//     if (s[i] == 'W')
+//     {
+//         c++;
+//     }
+// }
+// vi suff(n + 1, 0);
+// c = 0;
+// for (int i = n - 1; i >= 0; i--)
+// {
+//     suff[i] = c;
+//     if (s[i] == 'W')
+//     {
+//         c++;
+//     }
+// }
+// deque<int> dq;
+// int i = -1;
+// int j = 0;
+// int ans=0;
+// dq.push_back(-1);
+// while (j < n)
+// {
+//     if (s[j] == 'L')
+//     {
+//         k--;
+//         dq.push_back(j);
+//         if (k < 0)
+//         {
+//             dq.pop_front();
+//             i = dq.front();
+//             k++;
+//         }
+//     }
+//     // cout<<i<<" "<<j<<"\n";
+//     int x = 2 * (j - i) - 1;
+//     if ((i + 1) != j)
+//     {
+//         x = x + pref[i + 1] + suff[j];
+//     }
+//     else
+//     {
+//         x = x + pref[i + 1];
+//     }
+//     ans=max(ans,x);
+//     j++;
+// }
+// cout<<ans<<"\n";

@@ -68,28 +68,25 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    string s;
+    cin>>s;
+    map<int,string> mpp;
+    mpp[0]="";
+    mpp[1]="";
+    mpp[2]="2";
+    mpp[3]="3";
+    mpp[4]="322";
+    mpp[5]="5";
+    mpp[6]="53";
+    mpp[7]="7";
+    mpp[8]="7222";
+    mpp[9]="7332";
+    string ans="";
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+            ans=ans+mpp[s[i]-'0'];
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
-    {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
-    }
+    sort(ans.begin(),ans.end(),greater<char>());
     cout<<ans<<" ";
 }
 int32_t main()
@@ -105,6 +102,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

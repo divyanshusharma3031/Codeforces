@@ -63,34 +63,71 @@ vi getbinary(int n)
     }
     return ans;
 }
+int mySqrt(int x)
+{
+    int lo = 0;
+    int hi = 1e9;
+    int mid = 0;
+    while (lo <= hi)
+    {
+
+        mid = (lo + hi) / 2;
+        if (x < mid * mid)
+        {
+            hi = mid - 1;
+            mid--;
+        }
+        else
+        {
+            lo = mid + 1;
+        }
+    }
+    return mid;
+}
 void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
-    cin >> n;
-    vpi v;
-    for(int i=0;i<n;i++)
+    cin >> n; // no. of lines
+    // y=kx means passes through origin
+    ll m;
+    cin >> m; // no . of parabolas
+    vector<int> lines;
+    for (int i = 0; i < n; i++)
+    {
+        int k;
+        cin >> k;
+        lines.push_back(k);
+    }
+    vector<vector<int>> parabolas;
+    for (int i = 0; i < m; i++)
     {
         int a;
         int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        int c;
+        cin >> a >> b >> c;
+        parabolas.push_back({a, b, c});
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    sort(lines.begin(),lines.end());
+    for (auto it : parabolas)
     {
-        if(ans<=v[i].second)
+        int product = 4ll * it[0] * it[2];
+        auto x=lower_bound(lines.begin(),lines.end(),it[1])-lines.begin();
+        if(x <n && ((it[1]-lines[x])*(it[1]-lines[x]))<product)
         {
-            ans=v[i].second;
+            cout<<"YES\n";
+            cout<<lines[x]<<"\n";
+        }
+        else if(x>0 && ((it[1]-lines[x-1])*(it[1]-lines[x-1]))<product)
+        {
+            cout<<"YES\n";
+            cout<<lines[x-1]<<"\n";
         }
         else
         {
-            ans=v[i].first;
+            cout<<"NO\n";
         }
     }
-    cout<<ans<<" ";
 }
 int32_t main()
 {
@@ -98,13 +135,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

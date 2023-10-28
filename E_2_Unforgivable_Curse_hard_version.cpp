@@ -68,43 +68,68 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    ll k;
+    cin >> k;
+    string s;
+    string t;
+    cin >> s;
+    cin >> t;
+    if (k > n)
+    {
+        if (s == t)
+        {
+            cout << "YES\n";
+            return;
+        }
+        cout << "NO\n";
+        return;
+    }
+    int i = 0;
+    int j = k;
+    set<int> st;
+    for (int i = 0; i < n; i++)
+    {
+        st.insert(i);
+    }
+    vector<int> Count(26, 0);
+    while (j < n)
+    {
+        st.erase(i);
+        st.erase(j);
+        i++;
+        j++;
+    }
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        if(st.find(i)==st.end())
+        {
+            Count[s[i]-'a']++;
+            Count[t[i]-'a']--;
+        }
+        else if(s[i]!=t[i])
+        {
+            cout<<"NO\n";
+            return;
+        }
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
-    int ans=0;
-    for(int i=0;i<n;i++)
+    int x=count(Count.begin(),Count.end(),0ll);
+    if (x == 26)
     {
-        if(ans<=v[i].second)
-        {
-            ans=v[i].second;
-        }
-        else
-        {
-            ans=v[i].first;
-        }
+        cout << "YES\n";
+        return;
     }
-    cout<<ans<<" ";
+    cout << "NO\n";
 }
 int32_t main()
 {
     // hamare saath shree raghunath to kisi baat ki chinta nahi
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--)
     {
         solve();
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1

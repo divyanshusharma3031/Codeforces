@@ -68,29 +68,67 @@ void solve()
     // Do not get stuck on a single approach for long, think of multiple ways
     ll n;
     cin >> n;
-    vpi v;
+    ll m;
+    cin>>m;//no. of consecutive cats allowed
+    map<int,int> mpp;
+    vector<int> adj[n+1];
     for(int i=0;i<n;i++)
     {
-        int a;
-        int b;
-        cin>>a>>b;
-        v.push_back({a,b});
+        int x;
+        cin>>x;
+        mpp[i+1]=x;
     }
-    sort(v.begin(),v.end());
-    // exams isi order mai dega
+    for(int i=0;i<n-1;i++)
+    {
+        int x;
+        int y;
+        cin>>x>>y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
+    queue<array<int,2>> q;
+    if(mpp[1])
+    {
+        q.push({1,m-1});
+    }
+    else
+    {
+        q.push({1,m});
+    }
+    vector<int> vis(n+1,0);
+    vis[1]=1;
     int ans=0;
-    for(int i=0;i<n;i++)
+    while(!q.empty())
     {
-        if(ans<=v[i].second)
+        auto it=q.front();
+        q.pop();
+        int node=it[0];
+        int can=it[1];
+        if(adj[node].size()==1 && node!=1)
         {
-            ans=v[i].second;
+            ans++;
         }
-        else
+        for(auto x:adj[node])
         {
-            ans=v[i].first;
+            if(!vis[x])
+            {
+                vis[x]=1;
+                if(mpp[x])
+                {
+                    if((can-1)>=0)
+                    {
+                        q.push({x,can-1});
+                    }
+
+                }
+                else
+                {
+                    q.push({x,m});
+                }
+            }
         }
     }
-    cout<<ans<<" ";
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -105,6 +143,3 @@ int32_t main()
     }
     return 0;
 }
-// 4 3
-// 5 2
-// 6 1
