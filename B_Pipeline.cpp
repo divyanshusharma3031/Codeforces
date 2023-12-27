@@ -97,92 +97,57 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
+
+bool check(int mid,int n,int k)
 {
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
+    if(mid==1)
     {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
+        return k>=n;
     }
-    return 1;
+    int ans=(mid*(2*k-(mid-1)))/2-(mid-1);
+    return ans>=n;
 }
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
-int solve()
+
+void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
-    for(int i=0;i<n;i++)
+    ll n;
+    cin >> n;
+    ll k;
+    cin>>k;
+    ll total=(k*(k-1))/2+1;
+    if(total<n)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
+        cout<<"-1\n";
+        return;
     }
-    if(mx==P[0] || mx==P[n-1])
+    if(n==1)
     {
-        // cout<<"1\n";
-        return 1;
+        cout<<"0\n";
+        return;
     }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
+    if(n<=k)
     {
-        if(P[i]<P[i-1])
+        cout<<1<<"\n";
+        return;
+    }
+    int lo=1;
+    int hi=k;
+    int ans=k;
+    while(lo<=hi)
+    {
+        int mid=(lo+hi)/2;
+        if(check(mid,n,k))
         {
-            smallsleft[i]=false;
+            ans=mid;
+            hi=mid-1;
         }
         else
         {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
+            lo=mid+1;
         }
     }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
-    {
-        if(P[i]>P[i+1])
-        {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
-        }
-    }
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
-        }
-    }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
-    }
-    return 3;
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -190,10 +155,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }

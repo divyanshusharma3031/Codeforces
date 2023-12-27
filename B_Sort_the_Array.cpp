@@ -97,92 +97,55 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
-{
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
-    {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
-int solve()
+
+void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
+    ll n;
+    cin >> n;
+    vector<int> arr(n,0);
     for(int i=0;i<n;i++)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
+        cin>>arr[i];
     }
-    if(mx==P[0] || mx==P[n-1])
+    // segment is reversly sorted 
+    // 0,l-1 is sorted and arr[r]>arr[l-1] and arr[l]<arr[r+1];
+    if(is_sorted(arr.begin(),arr.end()))
     {
-        // cout<<"1\n";
-        return 1;
+        cout<<"yes\n";
+        cout<<"1 1\n";
+        return;
     }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
+    int i=0;
+    while(i<(n-1) && arr[i]<=arr[i+1])
     {
-        if(P[i]<P[i-1])
-        {
-            smallsleft[i]=false;
-        }
-        else
-        {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
-        }
+        i++;
     }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
+    int j=n-1;
+    while(j>0 && arr[j-1]<=arr[j])
     {
-        if(P[i]>P[i+1])
-        {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
-        }
+        j--;
     }
-    for(int i=1;i<n;i++)
+    vector<int> narr;
+    for(int idx=0;idx<i;idx++)
     {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
-        }
+        narr.push_back(arr[idx]);
     }
-    for(int i=n-1;i>=0;i--)
+    for(int idx=j;idx>=i;idx--)
     {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
+        narr.push_back(arr[idx]);
     }
-    return 3;
+    for(int idx=j+1;idx<n;idx++)
+    {
+        narr.push_back(arr[idx]);
+    }
+    if(is_sorted(narr.begin(),narr.end()))
+    {
+        cout<<"yes\n";
+        cout<<i+1<<" "<<j+1<<"\n";
+        return;
+    }
+    cout<<"no\n";
 }
 int32_t main()
 {
@@ -190,10 +153,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }

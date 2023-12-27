@@ -97,103 +97,72 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
+vector<string> tokenize(string s, string delimiter = "||")
 {
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
+    size_t pos = 0;
+    string token;
+    vector<string> ans;
+    while ((pos = s.find(delimiter)) != std::string::npos)
     {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
+        token = s.substr(0, pos);
+        ans.push_back(token);
+        s.erase(0, pos + delimiter.length());
     }
-    return 1;
+    ans.push_back(s);
+    return ans;
 }
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
+
 int solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
-    for(int i=0;i<n;i++)
+    ll n;
+    cin >> n;
+    map<string, vector<string>> mpp;
+    for (int i = 0; i < n; i++)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
-    }
-    if(mx==P[0] || mx==P[n-1])
-    {
-        // cout<<"1\n";
-        return 1;
-    }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]<P[i-1])
+        string s=str_arr[i];
+        auto it=tokenize(s, "||");
+        auto v=it[3];
+        auto source=it[0];
+        auto lst=tokenize(v,",");
+        for(auto ele:lst)
         {
-            smallsleft[i]=false;
-        }
-        else
-        {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
+            mpp[source].push_back(ele);
+            mpp[ele].push_back(source);
         }
     }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
+    queue<pair<string,int>> q;
+    q.push({sour,0});
+    map<string,int> vis;
+    vis[sour]=1;
+    while(!q.empty())
     {
-        if(P[i]>P[i+1])
+        auto it=q.front();
+        q.pop();
+        if(it.first==dest)
         {
-            smallsright[i]=false;
+            return it.second;
         }
-        else
+        for(auto ele:mpp[it.first])
         {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
+            if(vis.find(ele)==vis.end())
+            {
+                q.push({ele,it.second+1});
+            }
         }
     }
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
-        }
-    }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
-    }
-    return 3;
+    return -1;
 }
-int32_t main()
+int32_t main(int argc, char const *argv[])
 {
     // hamare saath shree raghunath to kisi baat ki chinta nahi
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
     int t = 1;
     cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }

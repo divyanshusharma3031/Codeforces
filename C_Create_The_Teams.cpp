@@ -97,93 +97,38 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
-{
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
-    {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
-int solve()
+
+void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
+    ll n;
+    cin >> n;
+    ll x;
+    cin>>x;
+    vector<int> arr(n,0);
     for(int i=0;i<n;i++)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
+        cin>>arr[i];
     }
-    if(mx==P[0] || mx==P[n-1])
+    int ans=0;
+    sort(arr.begin(),arr.end());
+    int idx=n;
+    for(int i=n-1;i>=0;)
     {
-        // cout<<"1\n";
-        return 1;
+        int have=idx-i;
+        int req=(arr[i]+x-1)/arr[i];
+        if(req>have)
+        {
+            i--;
+            continue;
+        }
+        idx=i;
+        i-=req;
+        ans++;
     }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]<P[i-1])
-        {
-            smallsleft[i]=false;
-        }
-        else
-        {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
-        }
-    }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
-    {
-        if(P[i]>P[i+1])
-        {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
-        }
-    }
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
-        }
-    }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
-    }
-    return 3;
+    cout<<ans<<"\n";
 }
+// 2 5 7 9 11
 int32_t main()
 {
     // hamare saath shree raghunath to kisi baat ki chinta nahi
@@ -193,7 +138,7 @@ int32_t main()
     cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }

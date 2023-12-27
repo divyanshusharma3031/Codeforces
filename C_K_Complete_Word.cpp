@@ -97,92 +97,74 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
+string s;
+void dfs(int node,vector<int> adj[],vector<int> &freq,vector<int> &vis)
 {
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
+    if(vis[node])
     {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
+        return;
     }
-    return 1;
+    vis[node]=1;
+    freq[s[node]-'a']++;
+    for(auto it:adj[node])
+    {
+        dfs(it,adj,freq,vis);
+    }
 }
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
-int solve()
+void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
+    ll n;
+    cin >> n;
+    ll k;
+    cin>>k;
+    cin>>s;
+    int i=0;
+    int j=n-1;
+    vector<int> adj[n+1];
+    while(i<n)
+    {
+        if(i<=j)
+        {
+            adj[i].push_back(j);
+            adj[j].push_back(i);
+        }
+        if((i+k)<n)
+        {
+            adj[i].push_back(i+k);
+            adj[i+k].push_back(i);
+        }
+        i++;
+        j--;
+    }
+    vector<int> vis(n+1,0);
+    int ans=0;
     for(int i=0;i<n;i++)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
-    }
-    if(mx==P[0] || mx==P[n-1])
-    {
-        // cout<<"1\n";
-        return 1;
-    }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]<P[i-1])
+        if(vis[i]==0)
         {
-            smallsleft[i]=false;
-        }
-        else
-        {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
-        }
-    }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
-    {
-        if(P[i]>P[i+1])
-        {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
+            vector<int> freq(26,0);
+            dfs(i,adj,freq,vis);
+            int mx=*(max_element(freq.begin(),freq.end()));
+            int idx=0;
+            for(int j=0;j<n;j++)
+            {
+                if(mx==freq[s[j]-'a'])
+                {
+                    idx=s[j]-'a';
+                    break;
+                }
+            }
+            for(int j=0;j<26;j++)
+            {
+                if(j!=idx)
+                {
+                    ans=ans+freq[j];
+                }
+            }
         }
     }
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
-        }
-    }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
-    }
-    return 3;
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -193,7 +175,7 @@ int32_t main()
     cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }

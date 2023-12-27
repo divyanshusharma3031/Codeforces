@@ -97,92 +97,59 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
+vector<vector<int>> Count;
+int solve(int lo,int hi,string &s,int c)
 {
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
-    {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
+    if(lo>hi)
     {
         return 0;
     }
-    if(allsame(s))
+    if(lo==hi)
     {
-        return -1;
+        return ((s[lo]-'a')!=c);
     }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
+    int mid=(lo+hi)/2;
+    int cnt1=Count[mid+1][c]-Count[lo][c];
+    int cnt2=Count[hi+1][c]-Count[mid+1][c];
+    return min((mid-lo+1)-cnt1+solve(mid+1,hi,s,c+1),hi-mid-cnt2+solve(lo,mid,s,c+1));
 }
-int solve()
+void test()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
-    for(int i=0;i<n;i++)
+    ll n;
+    cin >> n;
+    string s;
+    cin>>s;
+    if(n==1)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
-    }
-    if(mx==P[0] || mx==P[n-1])
-    {
-        // cout<<"1\n";
-        return 1;
-    }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]<P[i-1])
+        if(s[0]=='a')
         {
-            smallsleft[i]=false;
+            cout<<"0\n";
         }
         else
         {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
+            cout<<1<<"\n";
         }
+        return;
     }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
+    Count.resize(n+1,vector<int>(26,0));
+    for(int i=1;i<=n;i++)
     {
-        if(P[i]>P[i+1])
+        int idx=s[i-1]-'a';
+        for(int j=0;j<26;j++)
         {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
-        }
-    }
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
+            if(idx==j)
+            {
+                Count[i][j]=Count[i-1][j]+1;
+            }
+            else
+            {
+                Count[i][j]=Count[i-1][j];
+            }
         }
     }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
-    }
-    return 3;
+    int ans=solve(0,n-1,s,0);
+    cout<<ans<<"\n";
 }
 int32_t main()
 {
@@ -193,7 +160,7 @@ int32_t main()
     cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        test();
     }
     return 0;
 }

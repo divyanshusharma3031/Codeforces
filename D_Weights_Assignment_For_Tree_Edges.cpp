@@ -23,6 +23,7 @@ typedef vector<ll> vi;
 typedef vector<vector<int>> vii;
 typedef vector<pair<int, int>> vpi;
 typedef pair<int, int> pi;
+#define errA(A) for(auto i:A)   cout<<i<<" ";cout<<"\n";
 void myerase(ordered_set &t, int v)
 {
     int rank = t.order_of_key(v);                     // Number of elements that are less than v in t
@@ -97,92 +98,86 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
+
+void dfs(int node,int par,vector<int> adj[],vector<int> &values, map<pair<int,int>,int> &mpp)
 {
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
+    for(auto it:adj[node])
     {
-        if(s[i]!=s[i+1])
+        if(it==par)
         {
-            return 0;
+            continue;
         }
+        values[it]=values[node]+mpp[{node,it}];
+        dfs(it,node,adj,values,mpp);
     }
-    return 1;
 }
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
-int solve()
+
+void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
-    for(int i=0;i<n;i++)
+    ll n;
+    
+    cin >> n;
+    
+    int root=1;
+    
+    vector<int> adj[n+1];
+    
+    vector<int> par(n+1,0);
+
+    for(int i=1;i<=n;i++)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
+        par[i]=i;
     }
-    if(mx==P[0] || mx==P[n-1])
+
+    for(int i=1;i<=n;i++)
     {
-        // cout<<"1\n";
-        return 1;
+        int x;
+        cin>>x;
+        if(x==i)
+        {
+            root=x;
+            continue;
+        }
+        adj[x].push_back(i);
+        par[i]=x;
     }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
+    vector<int> parent(par.begin(),par.end());
+    vector<int> perm(n+1,0);
+    vector<int> index(n+1,0);
+    for(int i=1;i<=n;i++)
     {
-        if(P[i]<P[i-1])
-        {
-            smallsleft[i]=false;
-        }
-        else
-        {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
-        }
+        cin>>perm[i];
+        index[perm[i]]=i;
     }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
+
+    if(perm[1]!=root)
     {
-        if(P[i]>P[i+1])
-        {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
-        }
+        cout<<"-1\n";
+        return;
     }
-    for(int i=1;i<n;i++)
+    for(int i=n;i>0;i--)
     {
-        if(P[i]==mx && smallsleft[i-1])
+        if(index[perm[i]]<index[par[perm[i]]])
         {
-            return 2;
-        }
-    }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
+            cout<<"-1\n";
+            return;
         }
     }
-    return 3;
+    vector<int> dist(n+1,-1);
+    dist[root]=0;
+    int prev=0;
+    for(int i=2;i<=n;i++)
+    {
+        dist[perm[i]]=prev+1;
+        prev=dist[perm[i]];
+    }
+    for(int i=1;i<=n;i++)
+    {
+        cout<<dist[i]-dist[par[i]]<<" ";
+    }
+    cout<<"\n";
+
 }
 int32_t main()
 {
@@ -193,7 +188,7 @@ int32_t main()
     cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }

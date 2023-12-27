@@ -97,92 +97,33 @@ int modDivide(int a, int b, int m)
     else
         return (inv * a) % m;
 }
-int allsame(string &s)
-{
-    int n=s.size();
-    for(int i=0;i<n-1;i++)
-    {
-        if(s[i]!=s[i+1])
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-int SortArray(int n,int arr[],string &s)
-{
-    if(is_sorted(arr,arr+n))
-    {
-        return 0;
-    }
-    if(allsame(s))
-    {
-        return -1;
-    }
-    if(s[0]==s[n-1])
-    {
-        return 1;
-    }
-    return 2;
-}
-int solve()
+
+void solve()
 {
     // Do not get stuck on a single approach for long, think of multiple ways
-    int n;
-    cin>>n;
-   int mx=0;
-   vector<int> P(n,0);
-    for(int i=0;i<n;i++)
+    string s1;
+    string s2;
+    cin>>s1>>s2;
+    int x1=stoi(s1.substr(0,2));
+    x1=x1*60;
+    int y1=stoi(s1.substr(3));
+    int min1=x1+y1;
+    int x2=stoi(s2.substr(0,2));
+    x2=x2*60;
+    int y2=stoi(s2.substr(3));
+    int min2=x2+y2;
+    int min3=(min1+min2)/2;
+    string s3=to_string(min3/60);
+    if(s3.size()==1)
     {
-        cin>>P[i];
-        mx=max(mx,P[i]);
+        s3="0"+s3;
     }
-    if(mx==P[0] || mx==P[n-1])
+    string s4=to_string(min3%60);
+    if(s4.size()==1)
     {
-        // cout<<"1\n";
-        return 1;
+        s4="0"+s4;
     }
-    vector<int> smallsleft(n,true);
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]<P[i-1])
-        {
-            smallsleft[i]=false;
-        }
-        else
-        {
-            int x=smallsleft[i-1]&smallsleft[i];
-            smallsleft[i]=x;
-        }
-    }
-    vector<int> smallsright(n,true);
-    for(int i=n-2;i>=0;i--)
-    {
-        if(P[i]>P[i+1])
-        {
-            smallsright[i]=false;
-        }
-        else
-        {
-            smallsright[i]=(smallsright[i+1]&smallsright[i]);
-        }
-    }
-    for(int i=1;i<n;i++)
-    {
-        if(P[i]==mx && smallsleft[i-1])
-        {
-            return 2;
-        }
-    }
-    for(int i=n-1;i>=0;i--)
-    {
-        if(P[i]==mx && smallsright[i+1])
-        {
-            // cout<<"2\n";
-            return 2;
-        }
-    }
-    return 3;
+    cout<<s3+":"+s4<<"\n";
 }
 int32_t main()
 {
@@ -190,10 +131,10 @@ int32_t main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
     {
-        cout<<solve()<<"\n";
+        solve();
     }
     return 0;
 }
